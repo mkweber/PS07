@@ -1,27 +1,20 @@
-Demystify the Semester with the SDS 192 Grade Calculator
-================
+---
+title: "Demystify the Semester with the SDS 192 Grade Calculator"
+output: github_document
+---
 
-## The Calculator
-
-Replace the random values in the tibble column “scores” with your actual
-data and make predictions for future grades.
-
-``` r
-library(tidyverse)
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
-    ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
 
-    ## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
-    ## ✓ tibble  3.1.5     ✓ dplyr   1.0.7
-    ## ✓ tidyr   1.1.4     ✓ stringr 1.4.0
-    ## ✓ readr   2.0.2     ✓ forcats 0.5.1
+## The Calculator 
 
-    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-    ## x dplyr::filter() masks stats::filter()
-    ## x dplyr::lag()    masks stats::lag()
+Replace the random values in the tibble column "scores" with your actual data and make predictions for future grades.
 
-``` r
+```{r cars}
+library(tidyverse)
+
 #build the calculator and input your data in "scores"
 SDS_grades <- tibble(
   coursework = c("MT1", "MT2", "MP1", "MP2", "MP3", "FP", "Pset", "ENGMNT"),
@@ -41,11 +34,28 @@ SDS_grades <- tibble(
 SDS_grades
 ```
 
-    ## # A tibble: 1 × 2
-    ##   sem_grade letter_grade
-    ##       <dbl> <chr>       
-    ## 1      88.2 B+
+```{r, echo=FALSE}
+#import scale file
+library(readxl)
+grade_calc<-read_xlsx("data/README.xlsx")
+
+#reorder x axis
+grade_calc$letter_grade <- as.character(grade_calc$letter_grade)
+grade_calc$letter_grade <- factor(grade_calc$letter_grade, levels=unique(grade_calc$letter_grade))
+```
 
 ## See How You Stack Up
+```{r pressure, echo=FALSE}
+library(ggplot2)
 
-![](README_files/figure-gfm/pressure-1.png)<!-- -->
+ggplot() +
+  geom_point(grade_calc, mapping=aes(x= letter_grade, y = high_score), size=0.5) +
+  geom_point(grade_calc, mapping=aes(x= letter_grade, y= low_score), size=0.5) +
+  geom_point(SDS_grades, mapping = aes(x=letter_grade, y=sem_grade), color="red", size= 2) +
+  labs(
+    title = "Semester Grade Forecast in SDS 192",
+    subtitle = "As Shown by Red Dot",
+    y="score",
+    x= "letter grade")
+```
+
