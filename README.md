@@ -3,7 +3,7 @@ Demystify the Semester with the SDS 192 Grade Calculator
 
 ## The Calculator
 
-Replace the random values in the tibble column “scores” with your actual
+Replace the random values in the tibble variable “scores” with your actual
 data and make predictions for future grades.
 
 ``` r
